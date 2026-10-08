@@ -5,12 +5,10 @@ import * as authErrors from "../errors.js";
 import * as userErrors from "../../user/errors.js";
 import { generateToken } from "../utils/token.js";
 import { hashPassword, comparePassword } from "../utils/hash.js";
-import { toMs } from "../../../common/utils/time.js";
-import { sendEmail } from "../../../common/email/nodemailer.js";
-import { generateOTPcode } from "../../../common/utils/otp.js";
-import { OAuth2Client } from "google-auth-library";
-import { verifyGoogleToken } from "../../../common/utils/google.auth.js";
-import { name } from "nodemailer/lib/package-info.js";
+import { toMs } from "../../../pkg/utils/time.js";
+import { sendEmail } from "../../../lib/email/nodemailer.js";
+import { generateOTPcode } from "../../../lib/utils/otp.js";
+import { verifyGoogleToken } from "../../../lib/utils/google.auth.js";
 
 export async function register(userData) {
     //1. check user exist
@@ -123,13 +121,13 @@ export async function resetPassword(email, code, newPassword) {
 export async function loginWithGoogle(idToken) {
     //1. verify idToken
     const payload = await verifyGoogleToken(idToken);
-    //2. check user exist 
+    //2. check user exist
     const user = await authRepository.checkUserExistByEmail(payload.email);
-    //3. if user exist 
-    if(user) {
+    //3. if user exist
+    if (user) {
         return generateToken({
             id: user._id,
-            email: user.email
+            email: user.email,
         });
     }
     //4. create new account
@@ -137,11 +135,10 @@ export async function loginWithGoogle(idToken) {
         name: payload.name,
         email: payload.email,
         provider: "google",
-        isVerified: true 
+        isVerified: true,
     });
     return generateToken({
         id: createdUser._id,
-        email: createdUser.email
-    })
-
+        email: createdUser.email,
+    });
 }

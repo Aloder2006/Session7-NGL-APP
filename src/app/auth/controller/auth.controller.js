@@ -1,7 +1,12 @@
 import * as authService from "../service/auth.service.js";
-import { toMs } from "../../../common/utils/time.js";
-import { validateBody } from "../../../common/validation/validation.js";
-import { loginDTO, registerDTO, sendOtpDTO, verifyAccountDTO } from "../dto/auth.dto.js";
+import { toMs } from "../../../pkg/utils/time.js";
+import { validateBody } from "../../../lib/validation/validation.js";
+import {
+    loginDTO,
+    registerDTO,
+    sendOtpDTO,
+    verifyAccountDTO,
+} from "../dto/auth.dto.js";
 
 export async function register(req, res, next) {
     try {
@@ -78,7 +83,7 @@ export async function resetPassword(req, res, next) {
 
 export async function loginWithGoogle(req, res, next) {
     try {
-        const {idToken} = req.body;
+        const { idToken } = req.body;
         const token = await authService.loginWithGoogle(idToken);
 
         res.cookie("access_token", token, {
@@ -89,7 +94,6 @@ export async function loginWithGoogle(req, res, next) {
             message: "User logged in successfully",
             success: true,
         });
-        
     } catch (error) {
         next(error);
     }

@@ -1,5 +1,4 @@
-import { AppError } from "../../common/error/error.js";
-
+import { AppError } from "../../lib/error/error.js";
 
 export const expiredOTP = new AppError("OTP is Expired", 404);
 
