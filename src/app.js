@@ -4,7 +4,9 @@ import "./lib/db/mongoose.js";
 import express from "express";
 import router from "./route.js";
 import cors from "cors";
+import { correlationId } from "./lib/correlation/correlationId.js";
 import { globalErrorHandler } from "./lib/error/error.handler.js";
+import cookieParser from "cookie-parser";
 
 export function createApp() {
     const app = express();
@@ -16,6 +18,11 @@ export function createApp() {
     );
 
     app.use(express.json());
+
+    app.use(cookieParser());
+
+    // Correlation ID
+    app.use(correlationId);
 
     app.use("/api", router);
 

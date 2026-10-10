@@ -9,6 +9,7 @@ import { toMs } from "../../../pkg/utils/time.js";
 import { sendEmail } from "../../../lib/email/nodemailer.js";
 import { generateOTPcode } from "../../../lib/utils/otp.js";
 import { verifyGoogleToken } from "../../../lib/utils/google.auth.js";
+import { mailProvider } from "../../../lib/email/init.js";
 
 export async function register(userData) {
     //1. check user exist
@@ -29,7 +30,7 @@ export async function register(userData) {
         expireAt: new Date(Date.now() + toMs(10, "minutes")),
     });
     //6. send OTP into mail
-    await sendEmail(
+    await mailProvider.sendMail(
         userData.email,
         "OTP Verification",
         `
@@ -94,7 +95,7 @@ export async function sendOtp(email) {
         expireAt: new Date(Date.now() + toMs(10, "minutes")),
     });
     //5. send OTP in mail
-    await sendEmail(
+    await mailProvider.sendMail(
         email,
         "New OTP",
         `

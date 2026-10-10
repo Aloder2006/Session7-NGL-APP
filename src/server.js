@@ -17,6 +17,6 @@ async function shutDown() {
     });
 }
 
-server.on("SIGINT", shutDown);
+process.on("SIGINT", shutDown);
 
-server.on("SIGTERM", shutDown);
+process.on("SIGTERM", shutDown);

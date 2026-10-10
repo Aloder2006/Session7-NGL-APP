@@ -6,6 +6,7 @@ import {
     registerDTO,
     sendOtpDTO,
     verifyAccountDTO,
+    resetPasswordDTO
 } from "../dto/auth.dto.js";
 
 export async function register(req, res, next) {
@@ -75,7 +76,10 @@ export async function resetPassword(req, res, next) {
         const data = validateBody(resetPasswordDTO, req.body);
         const { email, code, newPassword } = data;
         await authService.resetPassword(email, code, newPassword);
-        res.sendStatus(204);
+        res.status(204).json({
+            message: "Password reset successfully",
+            status: "success",
+        });
     } catch (error) {
         next(error);
     }
